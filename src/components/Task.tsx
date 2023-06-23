@@ -65,7 +65,7 @@ export const Task = ({ task, handleTaskClick, handleTaskDeletion }: ITask) => {
                 Deletar tarefa
               </Heading>
               <Flex direction={'column'} gap={'1'}>
-                <Text>Deseja mesmo deletar a tarefa de id {task.id}?</Text>
+                <Text>Deseja mesmo deletar a tarefa &quot;{task.title}&quot;?</Text>
                 <Text>Essa ação é irreversível.</Text>
               </Flex>
               <Box css={{ mt: '$6' }}>

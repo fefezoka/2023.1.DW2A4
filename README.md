@@ -16,6 +16,7 @@ Prof. Quirino <luiz.quirino@ifsp.edu.br>
 - Notificações com react-toastify
 - Utilizei a última versão do react-router-dom
 - Alterei as cores e algumas estilizações
-- Modal de confirmação para deletar task
+- Modal de confirmação para deletar tarefa
 - É possível confirmar a adição e remoção da tarefa usando o ENTER (é algo simples, mas melhora a experiência do usuário)
-- Esqueleto das tarefas durante o carregamento
+- Permanência das tarefas após atualizar a página (usei local storage)
+- Esqueleto das tarefas durante o carregamento (é eficiente na primeira vez que acessa o site, pois as tarefas ainda não estão no local storage)

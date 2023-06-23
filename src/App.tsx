@@ -5,6 +5,7 @@ import { v4 } from 'uuid';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import { AddTask, TaskDetails, Tasks, Header } from './components';
 import { Line } from './styles/Skeleton';
+import { IoRefresh } from 'react-icons/io5';
 
 export const App = () => {
   global();
@@ -12,9 +13,18 @@ export const App = () => {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
+    const tasks = window.localStorage.getItem('tasks');
+
+    if (tasks) {
+      setTasks(JSON.parse(tasks) as Task[]);
+      setLoading(false);
+      return;
+    }
+
     axios.get('https://jsonplaceholder.cypress.io/todos?_limit=10').then((response) => {
       setTasks(response.data);
       setLoading(false);
+      window.localStorage.setItem('tasks', JSON.stringify(response.data));
     });
   }, []);
 
@@ -30,12 +40,23 @@ export const App = () => {
   };
 
   const handleTaskAddition = (title: string) => {
-    setTasks((tasks) => [...tasks, { id: v4(), title, completed: false, userId: 2 }]);
+    const newTasks = [...tasks, { id: v4(), title, completed: false, userId: 2 }];
+
+    setTasks(newTasks);
+    window.localStorage.setItem('tasks', JSON.stringify(newTasks));
   };
 
   const handleTaskDeletion = (taskId: string) => {
-    setTasks((tasks) => tasks.filter((task) => task.id !== taskId));
+    const newTasks = tasks.filter((task) => task.id !== taskId);
+
+    setTasks(newTasks);
+    window.localStorage.setItem('tasks', JSON.stringify(newTasks));
     toast.success('Tarefa deletada com sucesso!');
+  };
+
+  const clearLocalStorage = () => {
+    window.localStorage.removeItem('tasks');
+    window.location.reload();
   };
 
   return (
@@ -59,6 +80,12 @@ export const App = () => {
             element={
               <>
                 <AddTask handleTaskAddition={handleTaskAddition} />
+                <Box
+                  css={{ position: 'absolute', top: 32, right: 32, cursor: 'pointer' }}
+                  onClick={clearLocalStorage}
+                >
+                  <IoRefresh size={24} color="var(--colors-blue9)" />
+                </Box>
                 {loading ? (
                   <Line rows={10} css={{ height: 48 }} />
                 ) : (
